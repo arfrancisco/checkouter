@@ -10,6 +10,15 @@ module CheckoutFlow
     end
 
     def call
+      ActiveRecord::Base.transaction do
+        update_order_item
+        apply_promotions
+      end
+    end
+
+    private
+
+    def update_order_item
       if order_item.present?
         order_item.increment(:quantity)
         order_item.price = order_item.quantity * product.price
@@ -19,7 +28,13 @@ module CheckoutFlow
       end
     end
 
-    private
+    def apply_promotions
+      CheckoutFlow.active_promos.each do |promo|
+        next unless promo.applicable?(order_item:)
+
+        promo.apply!(order_item:)
+      end
+    end
 
     def order
       @order ||= Order.find_or_create_by(name: @customer_name)

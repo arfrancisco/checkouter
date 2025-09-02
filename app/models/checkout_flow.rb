@@ -11,5 +11,11 @@ module CheckoutFlow
     def customer_removes_product_from_order(customer_name:, product_id:)
       RemoveProductFromOrder.call(customer_name:, product_id:)
     end
+
+    def active_promos
+      [
+        Promos::BuyOneTakeOne,
+      ]
+    end
   end
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CheckoutFlow do
+RSpec.describe 'CheckoutFlow Happy Path' do
   let(:tea) { FactoryBot.create(:product, code: 'gr1', name: 'Green Tea', price: 50) }
   let(:coffee) { FactoryBot.create(:product, code: 'cf1', name: 'Coffee', price: 60) }
 

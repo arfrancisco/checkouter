@@ -57,5 +57,21 @@ RSpec.describe CheckoutFlow::AddProductToOrder do
         expect(order.order_items.first.price).to eq(100)
       end
     end
+
+    context 'when product is applicable for a promo' do
+      before do
+        allow(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:promo_code).and_return('BOGO')
+      end
+
+      it 'applies the promo when adding the product' do
+        tea.applicable_promos << 'BOGO'
+        tea.save!
+
+        expect(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:applicable?).and_call_original
+        expect(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:apply!).and_call_original
+
+        described_class.call(customer_name: 'Alice', product_id: tea.id)
+      end
+    end
   end
 end
