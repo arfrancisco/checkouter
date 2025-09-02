@@ -8,9 +8,7 @@ RSpec.describe 'CheckoutFlow Buy One Get One Path' do
 
   it 'applies promos correctly when adding or removing products from the order' do
     # with buy one get one free promo on tea
-    tea.applicable_promos << 'BOGO'
-    tea.save!
-    allow(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:promo_code).and_return('BOGO')
+    tea.update!(applicable_promos: [CheckoutFlow::Promos::BuyOneTakeOne.promo_code])
 
     # Customer adds one tea to their cart
     ::CheckoutFlow.customer_adds_product_to_order(customer_name: 'Alice', product_id: tea.id)

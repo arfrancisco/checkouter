@@ -15,6 +15,8 @@ module CheckoutFlow
     def active_promos
       [
         Promos::BuyOneTakeOne,
+        Promos::BulkLessTenPercent,
+        Promos::BulkLessThirtyThreePercent,
       ]
     end
   end

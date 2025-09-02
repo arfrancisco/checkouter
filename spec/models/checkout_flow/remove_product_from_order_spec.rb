@@ -53,14 +53,12 @@ RSpec.describe CheckoutFlow::RemoveProductFromOrder do
 
     context 'when product is applicable for a promo' do
       before do
-        allow(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:promo_code).and_return('BOGO')
         existing_order = FactoryBot.create(:order, name: 'Alice')
         existing_order.order_items.create!(product: tea, quantity: 3, price: 100)
       end
 
       it 'applies the promo when adding the product' do
-        tea.applicable_promos << 'BOGO'
-        tea.save!
+        tea.update!(applicable_promos: [CheckoutFlow::Promos::BuyOneTakeOne.promo_code])
 
         expect(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:applicable?).and_call_original
         expect(CheckoutFlow::Promos::BuyOneTakeOne).to receive(:apply!).and_call_original
