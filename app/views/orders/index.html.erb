@@ -1,0 +1,38 @@
+<div class="container pt-5">
+  <div class="row justify-content-evenly">
+    <div class="col-md-4">
+      <h3>Products</h3>
+
+      <% @products.each do |product| %>
+        <div class="card mb-3 p-2">
+          <div class="card-title"><%= product.name %></div>
+          <div class="card-text">
+            <strong>Price:</strong> €<%= product.price / 100.00 %>
+            <%= button_to 'Add to Cart', add_product_order_path(product, customer_name: @order.name), method: :post, class: 'btn btn-sm btn-primary d-inline' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Your Cart</h3>
+      <% if @order.present? %>
+        <% @order.order_items.each do |order_item| %>
+          <div class="card mb-3 p-2">
+            <div class="card-title">
+              <%= order_item.product.name %>
+            </div>
+            <div class="card-text">
+              <strong>Quantity:</strong> <%= order_item.quantity %>
+              <strong>Price:</strong> €<%= order_item.price / 100.00 %>
+              <%= button_to 'Remove from Cart', remove_product_order_path(order_item.product, customer_name: @order.name), method: :post, class: 'btn btn-sm btn-danger d-inline' %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <h4>Total: €<%= @total / 100.00 %></h4>
+
+      <%= link_to 'Checkout', new_order_path, class: 'btn btn-success' %>
+    </div>
+  </div>
+</div>
