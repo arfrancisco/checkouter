@@ -18,6 +18,19 @@
 
       <%= form_for @order do |f| %>
         <div class="mb-3">
+          <% if @order.errors.any? %>
+            <div class="alert alert-danger">
+              <h4>The following errors prevented the order from being created:</h4>
+              <ul>
+                <% @order.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mb-3">
           <%= f.label :name, 'Customer Name:', class: 'form-label' %>
         </div>
 

@@ -11,6 +11,7 @@ class OrdersController < ApplicationController
   end
 
   def create
+    @products = Product.all
     @order = Order.new(name: params[:order][:name])
 
     if @order.save
