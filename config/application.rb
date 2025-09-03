@@ -10,6 +10,7 @@ require "action_controller/railtie"
 # require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
+require "sprockets/railtie"
 require "action_view/railtie"
 # require "action_cable/engine"
 require "rails/test_unit/railtie"
@@ -20,14 +21,13 @@ Bundler.require(*Rails.groups)
 
 module Checkouter
   class Application < Rails::Application
+    config.middleware.use ActionDispatch::Flash
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
     config.active_record.query_log_tags_enabled = true
     config.active_record.query_log_tags = [
       # Rails query log tags:
       :application, :controller, :action, :job,
-      # GraphQL-Ruby query log tags:
-      current_graphql_operation: -> { GraphQL::Current.operation_name },
-      current_graphql_field: -> { GraphQL::Current.field&.path },
-      current_dataloader_source: -> { GraphQL::Current.dataloader_source_class },
     ]
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
@@ -48,6 +48,5 @@ module Checkouter
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
-    config.api_only = true
-  end
+    config.api_only = false  end
 end

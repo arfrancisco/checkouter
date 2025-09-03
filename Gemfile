@@ -6,7 +6,10 @@ gem "rails", "~> 7.1.5", ">= 7.1.5.2"
 gem "pg"
 gem "puma", ">= 5.0"
 gem "tzinfo-data"
-gem 'graphql'
+gem 'bootstrap-sass', '~> 3.4', '>= 3.4.1'
+gem 'sprockets-rails'
+gem 'uglifier'
+gem 'sassc-rails', '>= 2.1.0'
 
 group :development, :test do
   gem 'rspec-rails'
